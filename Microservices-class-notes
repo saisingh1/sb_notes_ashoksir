@@ -1,0 +1,1222 @@
+Monolith Architecture
+Challenges with Monolith Architecture
+Load Balancer (Cluster)
+Load Balancing Algorithms
+	- Round Robbin
+	- Sticky Session
+	- IP Hashing
+MicroServices Introduction
+Challenges with MicroServices
+Advantages Of MicroServices
+MicroServices Architecture
+Service Registry (Eureaka)
+Api Gateway (Zuul proxy)
+2 Microservices development
+Interservice communication (FeignClient)
+Ribbon (Client side load balancing)
+Circuit Breaker (Hystrix)
+Actuators
+SpringBoot admin and Client
+Distributed Logging (Sleuth and Zipkin)
+Cloud Platforms Introducton
+Pivotal Cloud Foundry
+	- Account Creation
+	- CLI installation
+	- Microservices deployment into PCF using CLI
+	- Enable Auto Scaling 
+Security
+SAGA Design Pattern
+Jenkins
+Docker
+Apache Kafka
+
+
+Monolith Architecture
+---------------------
+If we develop all the functionalities in a single project then that project is called as Monolith Architecture Based Project.
+
+Our Project will be packaged as a war file that war is called Fat war file.
+
+Fat war file we will deploy into Application Server. That Server is responsible to process all the client requests.
+
+If we go for this approach we will be having below challenges
+
+1) Maintenence of the project
+
+2) Resource Utilization will be very high
+
+3) Performance will be slow
+
+4) Production patches are hectic
+
+5) Application Downtime
+
+6) Memory issues
+
+
+To overcome the above problems people will use Load Balancers (Cluster).
+
+Using Load Balancers we will distribute load to multiple servers
+
+
+10 nodes cluster
+
+public Integer hash(String ipaddress){
+
+	//formula
+	
+	return nodeIndex; (1-10)
+
+}
+
+
+Below 3 are the famous load balancer algorithms
+
+1) Round Robbin
+
+2) Sticky Session
+
+3) IP Hashing
+
+
+Note: This Load Balancing setup will done by Adminstration team.
+
+Scaling can be done in 2 ways
+
+1) Verticle Scaling : Increasing capacity of the system
+
+2) Horizontal Scaling : Adding more no.of nodes to cluster
+
+We will use scaling techniques to improve application speed/performance.
+
+
+Advantages of Load Balancer
+--------------------------
+1) Burden will be reduced on servers
+
+2) Application speed will be improved
+
+3) Memory issues will be reduced
+
+4) Production Patches will be easy
+
+5) Without application downtime we can deploy application to production
+
+
+
+Dis-Advantages
+--------------
+1) Cluster setup is costly
+
+2) Expertized Adminstrators are required to setup cluster
+
+3) 24/7 cluster monitoring is required
+
+
+
+Microservices is not a technology
+
+Microservices is not a framework
+
+Microservices is not an api
+
+Microservices is a design pattern
+
+
+
+
+
+
+
+
+
+
+Challenges with MicroServices
+-----------------------------
+1) Bounded Context : It is very difficult to decide boundary of
+Microservices in the project. Deciding boundary means deciding
+functionality for one micro services is difficult process. Experienced
+Architectes are required to decide boundary.
+
+
+2) Lot of Configuration : In every microservice we need to write
+Configuration like Swagger Config, Security Config, Actuator Config, DB Config etc. If we have 30 Microservices for Project, in 30 projects we need to write all these configurations.
+
+
+3) Less Visibility : Every Team member will not have complete visibility on all microservices when development is happening from different locations.
+
+
+4) Pack of cards problem : If main microservice is crashed due to some reason then other pass through microservices are going to fail to process the request.
+
+
+Advantages of MicroServices
+---------------------------
+1)Easy Maintenence : Maintenence cost for the project will be less.
+		     Modifications to the service will be easy
+
+
+2) Parallel Development : Multiple teams can work on developing multiple microservices parallely. We can use several technologies to develop microservices of one project.
+
+
+3) Faster Releases : In microservice limited functionality will be available so development and testing can be completed quickly hence we can release it to client.
+
+
+4)Scaling : For Microservice also we can apply Vertical Scaling and Horizontal scaling.
+
+
+Microservices Architecture
+--------------------------
+Microservices architecture will vary from project to project.
+
+All projects will not follow same architecture for developing 
+and deploying microservices.
+
+In Microservices architecture below components will be available
+
+1)Service Registry 
+
+2)Microservices of our project
+
+3)API gateway
+
+
+Service Registry
+----------------
+Service Registry is one microservices
+
+All our Project microservices will be registered with
+Service Registry
+
+Service Registry will provide details of all our project 
+microservices (Names, Description, URL, Helath, Status etc)
+
+Eureka Server we can use as a Service Registry
+
+Steps to create Service Registry
+--------------------------------
+1) Create SpringBoot WebApplication with below dependencies
+
+	1)Spring-boot-starter-web
+	2)netflix-eureka-server
+
+2) Change Port Number in application.yml file for embedded container
+	(8761)
+
+3) Configure property in application.yml file not to register this project with Service Registry Server (Eureka)
+
+	eureka.client.register-with-eureka=false
+
+4) Use @EnableEurekaServer annotation at SpringBoot Main class.
+
+5) Start the application and Check Eureka Server dashboard using below URL
+
+	http://localhost:8761/
+
+
+
+
+
+
+Steps to develop Eureka Client Application
+------------------------------------------
+1) Create SpringBoot web project with below dependencies
+
+	1)springboot-starter-web
+	2)netflix-eureka-client
+
+2) Add below details in application.yml file
+
+	1) port number
+	2) application-name
+	3) register with eureka (optional)
+
+3) Specify @DiscoveryClient annotation at SpringBoot main class
+
+4) Create RestController, Service, Repository according to our requirement
+
+5) Run this application and verify Eureka Dashboard. Our Eureka Client
+   Should be displayed in Eureka Dashboard under instances info.
+
+
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${DISCOVERY_URL:http://localhost:1111}/eureka/
+
+
+
+
+
+Application Requirement with Microservices Architecture
+-------------------------------------------------------
+1) Conversion Exchange API : Develop a microservices which will provide Currency Exchange Cost based on From and To Currencies.
+
+
+Maintain below currency details in Embedded Database.
+
+CURRENCY_EXCHAGNE_COST_DTLS
+---------------------------
+FROM 	TO	COST
+----------------------
+USD	INR	75.00
+AUD	INR	50.00
+EUR	INR	90.00
+
+
+2) Currency Conversion Service: This service is responsible to convert
+currency amount from one format to another format.
+
+This service rest api will take below details as input.
+
+	from
+	to 
+	quantity
+
+This service should fetch currency-exchange cost from CE api and calculate then return converted currency amount.
+
+
+
+Using FeignClient in CC-API
+---------------------------
+1) Add FeignClient dependency in pom.xml file
+
+2) Use @EnableFeignClients annotation at springboot start class
+
+3) Create a interface which acts as FeignClient
+
+4) Use created feignclient interface as bean to access CE-API
+
+
+
+
+As part of our microservice, sometimes we will access another microservice of our project, sometimes we will access 3rd party rest apis, sometimes we need to access third party soap webservices.
+
+
+In order to access third party rest api, we should develop rest client.
+
+In order to access third party soap webservice we should develop soap
+consumer.
+
+If one project is directly talking to another project then it is called as Point To Point Connectivity. In P2P tightly coupling problems will be available to overcome those we will ESB (Enterprise Service Bus). MuleSoft is one of the ESB.
+
+
+
+http://www.tekleads.com/cc/conver/from/USD/to/INR/quantity/100
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Spring Cloud Libraries
+
+Netflex --> Eureka Server (Service Registry)
+	--> Eureka Client
+
+Inter MicroService communication
+--------------------------------
+RestTemplate ---> URL directly
+WebClient --> URL directly
+
+FeignClient
+
+
+
+
+
+
+
+
+http://localhost:3333/api/cc/convert/from/USD/to/INR/quantity/20
+
+
+1) Create SpringBoot Project with below dependencies
+
+	1)springboot-starter-web
+	2)netflix-eureka-client
+	3)netflix-zuul
+
+
+2) Write below 2 annotations at SpringBoot Start class
+
+	1)@EnableDiscoveryClient
+	2)@EnableZuulProxy
+
+3) Configure below details in application.yml file
+	
+	1) server-port
+	2) application-name
+	3) routing configuration
+
+
+
+
+
+
+Load Balancing
+--------------
+The process of distributing load to multiple servers.
+
+Load Balancers are used to scaleup our application (improving performance of the application).
+
+Load Balancing can be done in 2 ways
+
+	1)Server Side Load Balancing
+	2)Client Side Load Balancing
+
+
+Server Side Load Balancing
+--------------------------
+In Server Side Load balancing our project our file will be deployed to
+multiple servers.
+
+All these Server nodes will be connected to Load Balancer. Load Balancer will maintain an algorithm to forward client request to one of the node.
+
+Inside load balancer DNS mapping will be available. To that DNS url actual server urls will be mapped.
+
+In Server Side Load Balancing, LBR will use below types of alogorithms
+	1)Round Robbin
+	2)Sticky Session
+	3)IP Hashing
+
+Challenges
+----------
+1) Infrastructure cost will be very high
+
+2) LBR setup is manual process
+
+3) Adding / Removing server in LBR is hectic task
+
+
+
+
+For Microservices we can use Client Side Balancing
+
+In-order to setup Client Side Balancing, Spring Cloud Netflix
+libraries provided Ribbon concept.
+
+Using Netflix Ribbon we can establish Client Side Load Balancing.
+
+If one microservice is running in 10 Instances, client application will decide to send the request to one of the instance out of 10 instances.
+
+
+
+
+
+
+1) Start Service-Registry Project (Eureka Server)
+
+2) Start CE-API with 3 instances
+
+Right Click on SB start class -> Run As -> Run Configurations -> Arguments tab -> type -Dserver.port=<port-no> in VM Args section -> Apply -> Run
+
+Note: Repeat above process for 3 times with 3 different port numbers.
+
+Verify Eureka Dashboard, we should be able to see 3 URLs for CE-Service name.
+
+3) Start CC-API
+
+4) Send Request to CC api and observe response given by CC API (In CC response we will get CE Instance Port which tells us which instance of CE processed our request).
+
+
+http://localhost:8888/convert/from/USD/to/INR/quantity/10
+
+
+Cloud Computing
+---------------
+Providing on-demand systems and resources required for Projects.
+
+There are several Cloud Providers available in market.
+
+	1) AWS (Amazon Webservices)
+	2) Azure (MicroSoft)
+	3) Google Cloud
+	4) IBM Cloud
+	5) PCF (Pivotal Cloud Foundry)
+
+From these cloud providers we can access resources/infrastructure/services required for our project.
+
+Cloud Providers follows 'Pay For Use' mechanism.
+
+If we want to use services/resources/infrastructure then we can pay money and we can use them.
+
+With This approach we no need to spend lot of money to purchase all the things required for us. We can save our money with help of Cloud Computing.
+
+
+In cloud computing we are having below 3 types of services
+
+1) IAAS (Infrastructure as a service)
+
+2) SAAS (Software as a service)
+
+3) PAAS (Platform as a service)
+
+AWS, Azure comes under IAAS
+
+Dropbox, Cisco WebEx, GoToMeeting, ServiceNow comes under SAAS
+
+PCF comes under PAAS
+
+
+cf push <app-name> -p <jar>
+
+manifest.yml file contains application deployment information.
+
+app-name
+space
+instances
+path
+buidpack
+routes
+
+cf push
+
+
+
+
+PCF allocates 1GB space for our application
+
+Scaling
+-------
+1) Verticle Scaling (increase capacity of system)
+2) Horizontal Scaling (increase no.of servers)
+
+Flipkart announced Big Day sale from today 4 PM Onwards
+
+in normal days RPM - 1 lakh   (50 Nodes Cluster)
+
+in Big Day Sale RPM - 10 Lakhs (300 Nodes Cluster)
+
+RPM - 1 crore
+
+
+Enable AutoScale
+----------------
+
+
+
+Pending Concept
+---------------
+
+Actuators
+SpringBoot Admin Server
+SpringBoot Admin Client
+Circuit Breaker (Hystrix)
+
+Distributed Logging (Sleuth & Zipkin)
+Security (OAuth2.0)
+Apache kafka
+Redis Cache
+SAAGA Design Pattern
+SOAP Consumer
+
+
+Circuit Breaker
+---------------
+
+
+--------------------MicroService-C-------------------
+@RestController
+public class DecisionRestController{
+
+	@PostMapping("/decision")
+	public Response<String> makeDecisionForCcd(Person p){
+		//logic 
+	}
+
+	public Response<String> fallBackMethod(){
+		//fallback logic
+	}
+}
+----------------------------------------------------------------
+
+
+
+
+
+
+
+Steps to implement Circuit Breaker in our application
+-----------------------------------------------------
+1) Create SpringBoot web application with below dependencies
+	
+	1)springboot-starter-web
+	2)spring-cloud-netflix-hystrix
+
+2) Use @EnableCircuitBreaker annotation at SpringBoot main class
+
+3) Use @HystrixCommand at method level where we want to execute our fallback method.
+
+
+In every application we will implement logging.
+
+With the help of log files we will identify the issues occured in higher environment.
+
+To monitor these log files we will use several tools in company
+
+1) Putty
+
+2) WinScp
+
+3) Splunk (recommended)
+
+
+
+
+
+
+
+
+
+
+
+
+
+If our project is implemented based on Monolith Architecture then only one 
+log file will be created.
+
+We can monitor that log file to identify rootcause of the problems. 
+
+Monitoring one log file is easy.
+
+
+If our project is implemented based on Microservices architecture
+then for every microservice one log file will be created.
+
+When request processing is taking more time or when request processing is failed
+then we should monitor all the log files of our project then only we can understand
+the root cause of the problem.
+
+Monitoring all the log files is very difficult and we can't easily understand which request is failed. This is very challenging task in microservices.
+
+
+In order to avoid these problems, we can use Distributed Log Tracing in our Microservices.
+
+To implement Distributed Log Tracing we can use below concepts
+
+1)Sleuth
+---------
+Sleuth belongs to Spring Cloud Family. It will assign trace_id and span_id & app-name 
+for every log message.
+
+trace_id : It will be same for all the log messages of all microservices for a request
+
+span_id : It will be same for all the log messages of one microservice for a request.
+
+2)Zipkin : Using this we can easily monitor all logs using WEB UI provided by ZIPKIN server.
+
+Connector
+Storage
+Search
+Web UI
+
+
+
+
+
+2020-03-31 12:26:08.795  INFO 12180 --- [nio-1111-exec-1] com.tekleads.WelcomeController  : started getMsg() method 
+
+2020-03-31 12:26:08.796  INFO 12180 --- [nio-1111-exec-1] com.tekleads.WelcomeController  : ended getMsg() method
+
+
+
+Adding Sleuth to our Project
+----------------------------
+1) Add spring-cloud-starter-sleuth in project pom.xml file
+
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-sleuth</artifactId>
+		</dependency>
+
+---------------------------------------------------------------------------------------
+2020-03-31 12:31:40.887  INFO [WELCOME-SERVICE,8df53885b18ef7b9,8df53885b18ef7b9,false] 7628 --- [nio-1111-exec-1] com.tekleads.WelcomeController           
+: started getMsg() method 
+
+2020-03-31 12:31:40.888  INFO [WELCOME-SERVICE,8df53885b18ef7b9,8df53885b18ef7b9,false] 7628 --- [nio-1111-exec-1] com.tekleads.WelcomeController           
+: ended getMsg() method
+-------------------------------------------------------------------------------------
+
+With Sleuth Logging, log msg format will be like below
+
+[app-name, trace-id, span-id,zipkin-connector-flag, log-msg]
+
+
+Working with Zipkin Server
+-------------------------
+1) Download Zipkin Server Jar file and execute the jar using below command
+
+	java -jar  zipkin-server.jar (with this zipkin server will start)
+	Note: Zipkin server will start with 9411 as port number
+	Note: Access zipkin server dashboard using http://localhost:9411/
+
+2) Add Spring-cloud-starter-zipkin in project pom.xml file
+	<dependency>
+	  <groupId>org.springframework.cloud</groupId>
+	  <artifactId>spring-cloud-starter-zipkin</artifactId>
+	</dependency>
+
+3) Connect our microservice to Zipkin server by writing below property in application.properties file or application.yml file
+
+	spring.zipkin.enabled=true
+
+
+Sleuth (It appends app-name, trace-id, span-id to every log msg)
+
+Zipkin (It provides Web UI to trace logs)
+
+
+
+
+DB Tables
+---------
+1) Transactional tables (If we do write operations on the table)
+		- insert
+		- update
+		- delete
+
+2) Non-Transactional tables (If we do read operations on the table)
+		- select
+
+
+We can go for Cache to improve performance of the application.
+
+Cache we should implement for Non-Transactional tables so that whenver our application needs that data then we can read it from cache. With this no.of db calls will be reduced.
+		
+To create Cache we will use Key Value pair concept.
+
+-----------------------------------------------------------------------
+public class Cache{
+
+   private Map<String, Object> map = new HashMap<String,Object>();
+	//setter && getters
+
+}
+------------------------------------------------------------------------
+
+Caching we can implement in 2 ways
+
+1) Local Cache - > It is applicable for only one application
+
+2) Global Cache( Distributed Cache ) -> Several projects can use this cache
+
+
+In monolith architecture based applications we will use local cache.
+
+In Microservice based architecture application we should go for Distributed cache so that multiple services can access data available in the cache.
+
+We can use Redis Cache as Distributed Cache
+
+Redis is a No Sql Database which works on the concept of key-value pair
+
+Always we should use unique key to store the data
+
+Based on the key we can get value.
+
+Redis available as open source (licensed)
+
+Redis supports for various types of data like Strings, hashes, lists, sets, bitmaps etc..
+
+
+Redis Architecuture
+--------------------
+Redis Server 
+
+Redis Client
+
+
+Redis  vs RDBMS
+---------------
+Redis stores everything in primary memory
+RDBMS stores everything in secondary memory
+
+Redis : Read & Write operations will be fast because of primary memory storage
+RDBMS : Read & Write operations will be slow because of secondary memory storage
+
+Redis : Primary memory size will be less so storaing large files and binary data not recommended
+
+RDBMS : Secondary memory size will be more so we can store large and binary files also
+
+
+Redis : Used for storing small textual info which needs to accessed, modified and inserted at very fast rate.
+
+RDBMS : Recommended to hold huge amount of data
+
+
+URL to Download Redis Cache Server for Windows
+----------------------------------------------
+www.github.com/microsoftarchive/redis/releases
+
+Download zip file and extract it.
+
+Execute redis-server.exe file to start redis server in our machine.
+
+Execute redis-client.exe file to start redis client cli
+
+Once Redis Client CLI is started jus execute 'ping' it should give PONG as response.
+
+
+Command to store data in Redis in the form of KEY and VALUE
+-----------------------------------------------------------
+SET KEY "VALUE"
+
+Ex: SET UNAME "Ashok"
+
+Command to get data from redis using KEY
+----------------------------------------
+GET "KEY"
+
+Ex: GET "UNAME"
+
+
+Command to get all keys from REDIS Server
+-----------------------------------------
+KEYS *
+
+
+Steps to Develop SpringBoot Application with Redis Cache
+--------------------------------------------------------
+1) Create SpringBoot project with below dependencies
+	1) springboot-starter-web
+	2) spring-boot-starter-data-redis
+	3) swagger
+	4) devtools
+
+2) Create Required Request and Response Binding Classes for Rest API
+
+3) Create Repository Interface and implementation which interacts with Redis Server. 
+   (Inject HashOperations class into Repository impl class)
+
+   Note: To interact with Redis SpringBoot provided a class called "HashOperations"
+	 HashOperations class provided method to perform actual redis operations
+
+4) Create RestController class with HTTP Designator methods (Inject Repository class)
+
+5) Change Embedded Container Port Number in yml file (if required)
+	 server:
+	    port: 8081
+
+6) Start the application and access swagger-ui page (We can test here)
+
+
+-----------------------------------------------------------
+
+@Repository
+public class UserRepositoryImpl implements UserRepository{
+
+   private RedisTemplate<String, User> redisTemplate;
+   private HashOperations hashOperations;
+
+   public UserRepositoryImpl(RedisTemplate<String, User) redisTemplate){
+	this.redisTemplate = redisTemplate;
+	hashOperations = redisTemplate.opsForHash();
+   }  
+
+   public void save(User user){
+	hashOperations.put("USER", user.getUserId(), user);
+   }
+
+   public Map<String, User> findAll(){
+         return hashOperations.entries("USER");
+   }
+
+   public void delete(String id){
+          hashOperations.delete("USER", id);
+   }
+
+   public User findById(Strin id){
+	return (User)hashOperations.get("USER", id);
+   }
+
+   public void update(User user){
+	save(user);
+   }
+
+}
+
+
+JedisConnectionFactory class is used to establish connection with Redis Server.
+
+If Redis Server and our client application are in same machine then no need to set any
+configuration details.
+
+If Redis Server running on different machine then we should set host-name and port-number of Redis server to jedis-con-factory.
+
+
+	@Bean
+	private JedisConnectionFactory jedisConnectionFactory() {
+		JedisConnectionFactory jcf = new JedisConnectionFactory();
+		jcf.setHostname();
+	        jcf.setPort();
+		return jcf;
+	}
+
+	@Bean
+	private RedisTemplate<String, User> redisTemplate(){
+		RedisTemplate<String, User> redisTemplate = new RedisTemplate();
+		redisTemplate.setConnectionFactory(jedisConnectionFactory());
+		return redisTemplate;
+	}
+
+
+Using RedisTemplate we can get HashOperations impl object
+
+
+
+
+
+
+
+
+
+1) SAAGA 
+
+2) Config Server
+
+3) SOAP Client
+
+4) Spring MVC App
+
+5) List as Response in RestController
+
+
+
+
+
+
+
+Webservices
+------------
+Distributed Technology to develop distributed applications with intereoperability
+
+Intereoperability : Platform independent and language independent
+
+
+java  ----> .Net
+
+Python ---> Salesforce
+
+In Webservices we will have 2 actors
+
+1) Provider : Application which providing business services
+
+2) Consumer : Application which is accessing services from other applications
+
+In Webservices, always development will start at Provider side.
+
+Once Provider development and deployment is completed -> Then PRovider will share wsdl file to consumer.
+
+
+WSDL : Webservices description language
+		- Provider Endpoint URL
+		- Operations in Provider
+		- Input types
+		- Output Types
+		- Protocol details
+
+Using WSDL, consumer can start development.
+
+WSDL file will shared in below ways
+
+		1) UDDI (Not in use)
+		2) Emails
+		3) Sharepoint
+		4) Dynamic WSDL Generation URL
+
+
+
+ATM Soap Provider Endpoint URL : http://localhost:4040/AtmWeb/withdraw
+
+
+WSDL Gen URL : http://localhost:4040/AtmWeb/withdraw?wsdl
+
+
+
+
+Dynamic WSDL Gen URL : http://localhost:1111/service/studentDetailsWsdl.wsdl
+
+WSDL Elements
+-------------
+defintions --- root element
+
+types ----> input & output types
+
+message --> input msg & output msg (every operation contains 2 msgs)
+
+portType --> Mirror image of Provider Endpoint
+
+	    ->Operation means endpoint method
+
+binding --> protocols (MEF & MEP)
+
+service --> Endpoint URL
+(DTMPBS)
+
+WSDL files are 2 types
+
+1) Abstract WSDL (types, messages & portType)
+2) Concreate WSDL (all 5 sections)
+
+
+In Order to test SOAP Webservice Provider we will use SOAP UI tool
+
+
+SOAP --> Simple Object Access Protocol
+
+SOAP is called as Payload carrier
+
+Sample SOAP XML
+-----------------
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sch="http://www.tekleads.com/xml/school">
+   <soapenv:Header/>
+   <soapenv:Body>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+
+
+
+
+
+
+
+
+Webservices Terminologies
+-------------------------
+1) XML (Extensible Markup Language) - It stores data
+
+2) XSD (Xml Schema Definition) - It reprsents structure of the xml
+
+3) JAX-B (Java Architecture for XML Binding) - java obj to xml conversion and vice versa
+
+5) Provider (Provides business services)
+
+6) Consumer (Access business services)
+
+7) WSDL (Webservices description language) - XML file
+
+8) SOAP XML (Simple Object Access Protocol)
+
+9) SOAP UI (Webservices Testing tool)
+
+
+
+
+
+
+
+
+
+Webservices Provider Requirement
+--------------------------------
+Take Student Name as input and Provide Student Details as Output
+
+Input : Student-Name
+
+Output : Student-Name, Student-Standard and Address
+
+
+Development Procedure for SOAP Provider Development using SpringBoot
+---------------------------------------------------------------
+1) Create XSD for Request and Response Types
+2) Generate Binding Classes based on XSD using XJC
+	
+Note: We can generate binding classes in 2 ways
+	1) Execute XJC compilor in cmd with XSD as input
+	2) Use Maven plugin in project pom.xml to generate bindings using XSD
+
+3) Create Webservices Endpoint Using @Endpoint annotation
+4) Create Method inside Endpoint using below annotations
+	1) @PayloadRoot
+	2) @RequestPayload
+	3) @ResponsePayload
+
+5) Create one Configuration class for Webservices Configuration using below annotations
+ and extend from WsConfigurerAdapter
+	1) @Configuration
+	2) @EnableWS
+	
+6) Start provider application and test it using Soap ui tool
+
+
+
+	
+
+Procedure for Developing SOAP Consumer using SpringBoot
+-------------------------------------------------------
+Note-1: To Start SOAP Consumer development we should have WSDL
+
+Note-2: Before Starting Consumer Development, Test provider functionality using SOAP UI
+
+
+Step-1) Create SpringBoot web application with below dependencies
+
+	1)springboot-starter-web
+	2)spring-boot-starter-web-services
+
+Step-2) Create Stub Classes for WSDL file using jaxb2-maven-plugin
+
+Step-3) Create SoapConnector class by extending WebServiceGatewaySupport (predefined)
+
+Note: This WebServiceGatewaySupport will provide WebserviceTemplate. Using This WebserviceTemplate object we can call marshallSendAndRecieve(String url, Object req) method.
+
+	url - Soap Provider Endpoint URL
+	req - Input Data For Provider in object format
+
+Note: The Request object we are passing as second parameter will be converted to soap xml in runtime.
+
+
+Step-4) Create Configuration class for webservice with below beans
+	
+	a)Jaxb2Marshaller
+	b)SoapConnector (inject marshaller into SoapConnector bean)
+
+Step-5) Use SoapConnector class to make webservice call
+
+
+
+
+Config Server
+-------------
+Now a days projects are implementing based on microservices architecture.
+
+As part of one project we will have several microservices.
+
+Our Microservices will be talking to third party services and inter-service communication also will be available.
+
+MicroService-1 -----------------------> FPD Rest API (Third Party)
+
+
+By using Config Server we can externalize application configuration properties
+
+
+
+
+Procedure to Develop SpringBoot application with Config Server
+--------------------------------------------------------------
+
+1) Create Git Repo and place configuration files (.properties files)
+
+   Git Repo URL : https://github.com/TEK-Leads/Config-Properties.git
+
+	client-config.properties (default profile)
+		msg= Hello World
+
+	client-config-dev.properties (Dev profile)
+		msg= Hello World  (Dev)
+
+	client-config-prod.properties (Prod profile)
+		msg= Hello World (Prod)
+
+
+2) Create SpringBoot project with below dependency
+		
+		a)spring-cloud-config-server
+
+2.1) Use @EnableConfigServer at SpringBoot main class
+
+
+2.2) Create bootstrap.properties file with below configuration
+
+spring.cloud.config.server.git.uri=https://github.com/TEK-Leads/Config-Properties.git
+server.port=8888 
+
+2.3) Run SPringBoot application (It acts as Config Server)
+
+
+3) Create SpringBoot Project with below Dependency (It shud act as client for CS)
+	a)spring-cloud-config-client
+
+
+3.1) In Config-Client project we should configure Config-Server URL to fetch properties 
+
+	spring.cloud.config.uri=http://localhost:8888
+
+3.2) Create a RestController to display msg (that msg will come from git repo properties files)
+
+
+SAAGA
+-----
+
+
+@Data
+public class Contact{
+	//properties
+}
+-----------------------
+@Data
+public class Contacts{
+    private List<Contact> contacts; 
+}
+
+--------------------------------------------
+@RestController
+public class ContctRestController{
+    @GetMapping(value="/all", produces={"xml","json"})
+    public Contacts findAll(){
+        //logic
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

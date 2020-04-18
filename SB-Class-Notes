@@ -1,0 +1,1081 @@
+Java Realtime Project (19th Dec @9AM)
+
+SpringBoot with MicroServices (30th Dec @11 AM)
+
+
+Pre-requisites
+--------------
+
+Core Java
+----------
+Arrays, Strings, Oops, Collections, Exception Handling, MultiThreading, IO Streams, Generics, Annotations, Serialization, Wrapper Classes.
+
+Adv Java
+---------
+JDBC, Servlets, JSP and JSTL
+
+Frameworks
+-----------
+ORM (Hibernate)
+Spring (Core module)
+
+Database
+---------
+Basics of SQL
+
+
+
+
+Course Content
+----------------------
+Spring vs SpringBoot
+Advantages of SpringBoot
+SpringBoot Parent Starter
+SpringBoot starter poms
+SpringBoot AutoConfiguration
+SpringBoot Opinionated configuration
+SpringBoot Project creation ways
+SpringBoot Initializer
+SpringBoot starter
+SpringBoot CLI
+IOC Container
+Dependency Injection
+Autowiring
+Streotype annotations 
+@Controller
+@RestController
+@Service
+@Repository
+@Component
+@Configuration
+@Bean
+
+@SpringBootApplication annotation
+SpringBoot bootstrapping
+SpringBoot Banner (image banner & text banner)
+Standalone app development using SpringBoot
+
+Spring MVC Architecture
+DispatcherServlet
+HandlerMapper
+ViewResolver
+View
+@RequestBody
+@ResponseBody
+@ModelAttribute
+@RequestParam
+@PathVariable
+Embedded Servers in SpringBoot
+Tomact as Embedded Server
+Jetty as Embedded Server
+Undertow as Embedded Server
+Deploy Boot Application to external server
+Spring MVC Form Tag library
+Spring MVC Based Form Development using JSP
+Theamleaf Introduction
+Theamleaf Based Applications
+application.properties file
+application.yml file
+bootstrap.yml
+manifest.yml
+Springboot profiles
+SpringBoot Actuators
+Prevent Double Posting Problem (PRG design pattern)
+Email sending using SpringBoot
+
+
+SpringData
+----------
+ORM Introduction
+Drawbacks of existing ORM frameworks
+Advantages of SpringData
+Spring Data JPA Repositories
+CRUDRepository
+JPARepository (Pagination & Sorting)
+SingleRow operations
+Multi Row Operations
+Custom Queries execution in Spring Data
+Hikari  Connection Pool
+Using Spring Data in SpringBoot webapplication
+Embedded Database (h2)
+
+Spring with Rest
+-----------------
+SOAP vs REST
+Rest principles
+What is Spring with REST
+XML and XSD and JAX-B
+One Time operations
+Runtime Operations (Marshalling & Un-Marshalling)
+What is JSON
+XML vs JSON
+Jacson & Gson apis
+Resource Development using Spring with Rest
+Media Types (Consumes & Produces)
+Http Designator Methods( GET, POST, PUT and DELETE)
+SOAP UI
+POSTMAN
+SWAGGER
+Spring Reactive Programming (Spring 5.x features)
+Mono
+Flux
+RestClients Introduction
+Rest Client Development using RestTemplate
+Rest Client development using WebClient
+Rest Security (OAuth2.0)
+Exception Handling in SpringBoot Web & Rest apps
+
+MicroServices
+-------------
+What is Monolith Architecture
+Drawbacks of Monolith
+Cluster Setup
+What is Load Balancing
+Load Balancing Algorithms
+Microservices Introduction
+Advantages of MicroServices
+Dis-Advantages of Microservices
+MicroServices Architecture
+Developing 2 Microservices
+Interservice communication (FeignClient)
+ServiceRegistry (Eureka)
+APIGateway (zuul proxy)
+Cloud Introduction
+PCF Introduction
+Account creation in PCF
+Deploying microservices to PCF
+Client Side Load Balancing
+Ribbon
+SPringBoot Admin Server & Client
+SpringBoot Admin Dashboard
+Circuit Breaker using Hystrix
+Hystrix Dashboard
+Distributed Logging
+Sleuth Logging
+Zipkin Server
+Apache Kafka
+
+Tools
+-----
+Jenkins
+SonarQube
+Docker
+
+Duration: 2.5 Months
+Timings : 11:15 AM to 12:45 PM
+
+Facebook Group Name : TEK LEADS
+email : tekleads4u@gmail.com
+
+
+Spring
+--------------------
+Spring is an application development framework
+
+Spring is an open source framework
+
+Spring is a loosely coupled framework
+
+Spring is a versatile framework
+
+Spring framework developed in modular fashion
+
+
+What is SpringBoot?
+-------------------
+Spring Boot is an approach to develop Spring Based applications with minimal or less configurations.
+
+Latest version of Spring Boot is 2.2.2
+
+Using SpringBoot we can develop below types of applications
+
+1) Stand Alone applications
+
+2) Web applications
+
+3) Distributed applications ( Webservice/RestfulService/MicroService )
+
+
+Advantages of Spring
+--------------------
+
+1) SpringBoot Parent Starter
+-------------------------------
+Parent Starter contains version number based on that, child dependencies version number will be decided.
+
+No need to configure version number for child dependencies in pom.xml.
+
+Note : check Effective Pom to see which versions it is considering.
+
+2) Spring Boot Starter Pom 
+----------------------------
+Spring Boot starter poms are simplying maven pom.xml configuration.
+
+Ex :
+
+For stand-alone app : spring-boot-starter
+
+For web app : spring-boot-starter-web
+
+for jpa : spring-boot-starter-data-jpa
+
+Note: If we want to removed un-unsed dependencies from build path then we should use <exclusion> in pom.xml
+
+
+3) Auto configuration
+---------------------
+IOC stands for Inversion of control.
+
+IOC is a principle which is used to manage and colloborate dependencies among the objects in our application.
+
+We can start IOC container in multiple ways using below classes
+
+a) XmlBeanFactory
+b) ClassPathXmlApplicationContext
+c) AnnotationConfigApplicationContext
+d) XmlWebApplicationContext
+e) ReactiveApplicationContext etc.....
+
+
+In normal spring applications, we will configure our classes as SpringBeans in bean configuration file. That is called as Bean Definition.
+
+To make our classes as Spring Beans we will start IOC by giving bean configuration file as input. 
+
+This is manual process that we should follow in every project.
+
+If we are using SpringBoot no need to create bean configuration file and no need to start IOC manually. This process is automated in Spring Boot.
+
+package com.nit;
+
+@SpringBootApplication
+public class SpringBootApplication {
+  
+    public static void main(String... args){
+	SpringApplication.run(..);
+    }
+}
+
+@SpringBootApplication annotation is equal to below 3 annotations
+-----------------------------------------------------------------
+@SpringBootConfiguration
+
+@EnableAutoConfiguration
+
+@ComponentScan
+
+
+4) SpringBoot supports Embedded Server
+--------------------------------------
+When we create Spring Boot Web application it provides embedded server for project.
+
+When we run that web application, it deploys that project into embedded server (No need to download and install external servers).
+
+Spring Boot is providing below embedded servers
+
+1) Tomcat (by default)
+2) Jetty
+3) Netty
+4) Undertow
+
+Note: We can deploy Spring Boot web application into External Servers also like Weblogic, WebSphere, JBOSS and Glassfish etc..
+
+
+5) Actuators
+-------------
+Actuators are used to provide production ready features for application like heapdump, threadump, health check, configProps check, http tracing, shutdown etc..
+
+
+6) Profiles
+------------
+Profiles are used to configure Environment specific properites.
+
+DEV, QA, UAT, PILOT and Production are called as Environments of applications.
+
+For every environment log properties, DB props, SMTP props, 3 rd party webservice endpoint urls will be different.
+
+
+Advantages
+-----------
+1) Actuators
+2) Profiles
+3) Embedded Server
+4) AutoConfiguration
+5) Starter POM
+6) Parent Starter
+
+Dis-Advantages
+---------------
+1) It is difficult and time consuming process to migrate existing spring projects to spring boot applications.
+
+2)It is suitable for brand new projects (scratch development projects)
+
+
+
+
+
+
+Wraup Up
+--------
+Spring Boot = Spring framework + Embedded Servers - Xml configuration
+
+
+Creating SpringBoot Application
+-------------------------------
+We can create SpringBoot application in 3 ways
+
+1) Using Spring Initializer website ( start.spring.io )
+
+2) Using Spring Starter Wizard in Spring Tool Suite IDE
+
+3) Using CLI software
+
+
+We can create SpringBoot application using https://start.spring.io/
+
+Here we can select below details
+
+	1) Spring Boot Version 
+	2) Build Tool 
+	3) Java Version
+	4) Programming Language
+	5) Dependencies etc...
+
+After Clicking on 'Generate' button projet will be downloaded in zip format. Extract zip and import that project into IDE using import option as Existing Maven Project.
+
+File --> Import --> Existring Maven Project --> Give Projecet pom.xml file path
+
+We can create SpringBoot application directly in Spring Tool Suite IDE
+
+File --> New --> Spring Starter Project
+
+Note: When we use starter wizard option to create SpringBoot application internally it will make webservice call to start.spring.io website to create the project.
+
+
+Stereotype annotations
+-----------------------
+@Component
+@Service
+@Repository
+
+@Controller
+@Indexed
+
+Other Important Annotations
+---------------------------
+@RestController
+@Configuration
+@Bean
+@Autowired
+@ConfigurationProperties
+
+
+
+
+
+Boot Application
+----------------
+src/main/java
+	Start Class (@SpringBootApplication)
+	    - main method
+		 - run method (SpringApplication.run(..))
+src/main/resources
+	- application.properties or application.yml
+
+src/test/java
+	  - SpringBoot Test class(Unit testing)
+
+pom.xml file (parent starter & child starters)
+
+
+
+Maven Goals
+-----------
+clean : To delete target folder
+
+compile : To compile source code
+
+test : To execute Unit testing classes (Junits)
+
+package : To package our project (jar | war) depends on packaging type
+
+install : To install packaged file into maven local repository
+
+Syntax : 
+	mvn clean compile test package install
+
+
+Build Maven Project
+-------------------
+Right Click on Project --> Run as -> Maven Build -> Enter Goals with space delim and click on Apply --> Run
+
+With above goals our project build process will happen.
+
+Note: If Build is failed saying 'No Compilor Provided' then Add JDK in build path instead of JRE.
+
+If our BUILD IS SUCCESS it creates packaged file using our project groupId, artifactId and version.
+
+To change package file name we should <finalName> tag in <build> section of pom.xml file
+
+<build>
+   <finalName>01-Spring-Boot-App</finalName>
+</build>
+
+
+Syntax to execute jar file from command prompt
+----------------------------------------------
+>  java  -jar  <jar-file>
+
+Syntax to configure start class in pom.xml 
+------------------------------------------
+<properties>
+    <start-class>com.tekleads.Application</start-class>
+</properties>
+
+
+
+
+Component Scanning
+------------------
+It is the process of telling in which packages Spring Should search to recognize Component/Bean classes.
+
+Note: In Legacy spring framework programmer should configure Component Scan using either xml file or Configuration class.
+
+In SpringBoot ComponentScan is built in functionality
+
+How component scanning working in Spring Boot
+---------------------------------------------
+Start class package will be considered as basePackage
+
+SpringBoot will search in basePackage to recognize Spring Bean Classes.
+
+After Base Package scanning is completed it search for basePackage sub packages.
+
+basePackage : com.tekleads
+
+SubPackages : com.tekleads.service, com.tekleads.dao, com.tekleads.*
+
+com.demo.repository ----> This package will not be scanned
+
+@Component
+@Service
+@Repository
+
+@Controller
+@RestController
+
+@Configuration
+-------------------------------
+
+@Configuration
+public class AppConfig{
+
+     @Bean
+     public RestTemplate createRestTemplate(){
+	   return new RestTemplate( );
+     }
+     
+     @Bean
+     public Engine createEngine(){
+	Engine e = new Engine();
+	e.setId(101);
+	return e;
+     }
+}
+
+Autowiring
+----------
+The process of injecting one class object into another class
+is called autowiring.
+
+To perform Autowiring we will use @Autowired annotation.
+
+IOC ---> DI
+
+Dependency Injection
+--------------------
+The process of Injecting Dependent Object into Target object is called as Dependency Injection.
+
+We can achieve Dependency Injection in below 3 ways
+
+1) Constructor Injection (CI)
+
+2) Setter Injection (SI)
+
+3) Field Injection (FI)
+
+
+CI : Injecting dependent bean into target bean using target bean Constructor.
+
+SI : Injecting dependent bean into target bean using target bean setter method.
+
+FI : Injecting dependent bean into target bean using target bean field (variable)
+
+
+public class UserDao {
+   
+       public UserDao(Integer i, Integer j){
+		//logic
+       }
+	public JdbcTemplate jt ;
+
+	private Profile profile;
+
+	public void setProfile(Profile profile){
+		this.profile = profile;
+	}
+ 	//methods
+}
+
+
+------------------------------------------------------
+public class Test{
+     psvm(String... args){
+	UserDao dao = new UserDao(10,20); //CI
+	dao.setP(new Profile()); //SI
+	dao.jt = new JdbcTemplate( ); //FI
+     }
+}
+---------------------------------------------------------
+
+Note: In Test class we have done all 3 types dependency injections for UserDao class manually.
+
+
+In Spring we can automate all these 3 types of Dependency Injections using Autowiring.
+
+Note: Autowiring works only for Beans (not for primitives)
+
+
+
+
+
+
+
+
+
+
+S - Single Responsibility Principle
+
+O - Open Closed Principle
+
+L - Liskov Substitution Principle
+
+I - Interface Seggregation Principle
+
+D - Dependency Inversion Principle
+
+
+
+<bean id="service" class="pkg.ContactService">
+  <property name="dao" ref="contactDao"/> -- SI
+  <constructor-arg name="dao" ref="contactDao"/> -- CI
+</bean>
+
+<bean id="service1" class="pkg.ContactService">
+  <property name="dao" ref="contactDao"/> -- SI
+  <constructor-arg name="dao" ref="contactDao"/> -- CI
+</bean>
+
+
+
+<bean id="service" class="pkg.ContactService" autowire="byType">
+ 
+</bean>
+--------------------------------------------------
+
+
+
+
+
+
+Student.java (com.dao)
+Student.java (com.service)
+
+
+Student s = null;
+
+
+
+
+
+Develop a Standalone SpringBoot application to read data from CSV file and store it into Database.
+
+File format is below
+------------------------
+101,John,898989898
+102,Smith,799797979
+103,Peter,7979669969
+------------------------
+
+
+
+I/O classes
+------------
+FileReader  ---> To read file data character by character
+BufferedReader --> To read file data line by line
+
+
+List<Contact> clist= new AL();
+
+File f  = new File("filename.csv");
+
+FileReader fr = new FileReader(f);
+
+BufferedReader br = new BufferedReader(fr);
+
+String line = br.readLine ( );
+
+while(line!=null){
+	String[] arr = line.split(",");
+	Contact c = new Contact(1,2,3);
+	clist.add(c);
+
+	line = br.readLine () ;
+}
+
+br.close();
+
+
+
+
+
+
+Inserting CSV file data to Oracle DB table
+------------------------------------------
+1) Create Spring Boot standalone application
+
+2) Configure Oracle Driver dependency in pom.xml
+
+Note: We should install oracle driver jar into maven local repo using mvn install command.
+
+3) Configure DataSource properties in applicaiton.properties file
+
+4) Inject JdbcTemplate bean into Dao bean 
+	(DataSource will be injected to Jdbctemplate)
+
+5) Inject Dao bean into Service bean (service bean method should contain logic to read csv file data)
+
+DB-TABLE
+---------
+CREATE TABLE CONTACT_DTLS
+(
+  C_ID NUMBER(10),
+  C_NAME VARCHAR2(50),
+  C_NUM NUMBER(20)
+);
+
+spring-boot-starter
+spring-boot-starter-jdbc
+ojdbc6 (third party jar) -- mvn install
+----------------------------------------
+datasource config props in application.properties file
+
+spring.datasource.username=
+spring.datasource.password=
+spring.datasource.url=
+spring.datasource.driver-class-name=
+
+---------------------------------------------------------
+
+
+Loading Multiple Properties files using @PropertySource annotation
+-------------------------------------------------------------------
+
+@PropertySource({
+		"classpath:dbconfig.properties",
+		"classpath:mail.properties",
+		"classpath:logging.properties"
+})
+
+
+
+
+
+-> Right Click on SpringBoot Start class
+
+-> Run As -> Run Configurations
+
+-> Go to Arguments Tab  -> Pass below argument in VM Arguments
+
+    -Dspring.config.location=D:\SB-MS\application.properties
+
+-> Click on Apply and Run
+---------------------------------------------------------------------
+
+> java -jar -Dspring.config.location=""  <jar-file-name>
+
+
+
+
+
+>  java Calculator 10 20
+
+>  java -XX:+PrintGCDetails  Calculator
+
+> java -Xms1024m -Xmx2048m  CoDlyBatch
+
+
+
+We can our application.properties file in below locations
+----------------------------------------------------------
+1) Inside Project Root Folder
+	
+	02-sb-csv-reader-app
+		- src/main/java
+		- src/main/resources
+		- src/test/java
+		- src/test/resources
+		- application.properties
+		- pom.xml
+
+2) Inside 'config' folder like below
+	
+	02-sb-csv-reader-app
+		- src/main/java
+		- src/main/resources
+		- src/test/java
+		- src/test/resources
+		- config
+		     - application.properties
+		- pom.xml
+
+
+3) Inside root source folder
+
+       02-sb-csv-reader-app
+		- src/main/java
+		     - application.properties
+		- src/main/resources
+		- src/test/java
+		- src/test/resources
+		- pom.xml
+
+
+4) Inside root source folder and inside config
+
+       02-sb-csv-reader-app
+		- src/main/java
+		     - config
+			  - application.properties
+		- src/main/resources
+		- src/test/java
+		- src/test/resources
+		- pom.xml
+
+5) Inside resources folder
+	
+	02-sb-csv-reader-app
+		- src/main/java
+		- src/main/resources
+			- application.properties
+		- src/test/java
+		- src/test/resources
+		- pom.xml
+
+If properties file available outside of the project then we can load it using spring.config.location property.
+
+
+
+bootstrap.properties
+--------------------
+It is used to configure application name and config-server-url details.
+
+bootstrap.properties file will be loaded by parent container and it will be loaded before application.properties
+
+
+YML or YAML --> Yet Another Markup Language
+
+file extension should be .yml or .yaml
+
+
+
+
+
+
+application.properties
+-----------------------
+server.port=9090
+spring.datasource.username=IES_DEV
+spring.datasource.password=IES_DEV
+spring.datasource.url=jdbc:oracle:thin:@localhost:1521/XE
+spring.datasource.driver-class-name=pkg.OracleDriver
+
+If we convert above properties file to yml it looks like below
+
+application.yml
+---------------
+server: 
+    port: 9090
+
+spring:
+     datasource:
+	    username: IES_DEV
+	    password: IES_DEV
+	    url: jdbc:oracle:thin:@localhost:1521/XE
+	    driver-class-name: pkg.OracleDriver
+
+
+
+When we create boot application by default it provides application.properties file.
+
+-> We can rename that file to application.yml
+
+-> If we already configured properties in application.properties file
+   we can convert that into application.yml
+
+  (Right Click on File -> Select Convert from .properties to .yaml)
+  
+  (All the properties which are already configured will be converted       to yml syntax)
+
+ Note: In yml file indent spaces plays very important role
+
+-> To provide metadata about our properties we can write comments. To represent a comment we will use '#' symbol at line starting point.
+
+	Syntax : #Data Source Configuration
+
+
+
+
+
+
+Spring Boot Profiles
+--------------------
+Spring Boot Profiles are used to configure/manage environment specific configuration.
+
+
+Every Realtime application contains multiple environments like below
+
+1) DEV
+2) QA
+3) UAT
+4) PILOT
+5) PROD
+
+When we have environments like this some of the configuration properties are specific to an environment.
+
+1) DB Config Props
+2) SMTP Config Props
+3) Logging props
+4) 3rd Party Webservice URLs etc..
+
+If we have only one yml file in our project then we have to change those properties values when we are deploying our application from one environment to another environment.
+
+IT is very difficult and time consuming process to change these properties values every time for deployment.
+
+To avoid this problem we can use SpringBoot profiles concept. In this profiles approach we will maintain environment specific yml files.
+
+
+syntax to activate profile
+===========================
+
+spring: 
+    profiles: 
+	active:  <profile-name>
+
+
+Based on profile which is activated SpringBoot will load Configuration properties from that profile specific yml file.
+
+
+Note: When we run springboot application it prints on the console which profile is active.
+
+We can activate the profile using VM argument also
+
+Ex: -Dspring.profiles.active=<profile-name>
+
+
+
+
+
+
+
+
+
+
+
+
+
+When we use properties file we should create seperate properties file for every environment like below
+
+
+When we go for .yml files we have 2 options to manage profiles
+
+1) Creating profile specific yml
+
+2) Creating all profiles in single yml
+
+
+In IDE we will use 'Ctrl+Shift+F' shortcut to format code.
+
+Dont use this shortcut in yml file because it removes commented lines and it removes profiles seperator symbol(---).
+
+
+
+
+
+
+
+
+
+
+
+In SpringBoot we have 2 types of Runners
+----------------------------------------
+1) CommandLineRunner
+
+2) ApplicationRunner
+
+Note: These Runners will be executed as part of run (..) method execution.
+
+These runners will execute as a last step of SpringApplication.run( ) method
+
+If we have both runners in our application, first ApplicationRunner will execute then CommandLineRunner will execute
+
+
+@Order 
+-------
+It is used to decide order of executing Runner beans in SpringBoot application
+
+
+syntax
+-------
+  
+   @Component
+   @Order(1)
+   public class CmdRunner implements CommandLineRunner{
+
+		//override run() method
+   }
+
+
+
+
+ java -jar  03-sb-runners-app.jar  10 101 10
+
+
+Use cases for using Runners
+----------------------------
+Runners will execute only one time when application started.
+Below activities we can perform using Runners
+
+ 1) Data cleanup in staging tables
+
+ 2) Schedule batch jobs using CRON Expressions
+
+
+
+
+Banner in SpringBoot
+--------------------
+When we run SpringBoot application it prints Spring logo on the console that is called as SpringBoot banner.
+
+For SpringBoot banner we can set below 3 types of modes
+
+1)OFF : It won't print banner
+
+2)LOG : It prints banner in log files
+
+3)CONSOLE : It prints banner on console
+
+Note: If we don't set any mode, boot will consider CONSOLE as default mode.
+
+Syntax to set Banner Mode
+--------------------------
+spring.main.banner-mode=OFF
+
+By default Boot will consider Spring logo as default banner.
+
+In SpringBoot We have a flexibility to set Customer Banner also. 
+Boot supports for two types of banners
+
+1) ASCII Text Banner
+
+2) Image Banner
+
+
+
+
+Steps to use Custom ASCII text Banner
+----------------------------------
+1) Generate ASCII Banner text
+
+2) Create banner.txt file under src/main/resource folder
+
+3) Keep ASCII Banner text in banner.txt file
+
+
+When we run SpringBoot application by default it search for banner.txt file in classpath. If that file is available it will consider that file for banner printing. 
+
+If that file is not available boot will proceed default banner printing which is spring logo.
+
+If we want to change custom file name for banner text then we should write below property in application.properties file
+
+application.properties
+-------------------------
+spring.banner.location=abc.txt
+
+
+Google search key : spring boot ascii banner generator
+
+
+Steps to use Image Banner in SpringBoot
+---------------------------------------
+SpringBoot supports below 3 types of images for banner printing
+
+1) .gif
+
+2) .jpg
+
+3) .png
+
+Keep image in src/main/resource folder
+
+Configure image banner properties in application.properties or application.yml file like below
+
+application.properties
+----------------------
+spring.banner.image.location=banner.gif
+spring.banner.image.width=40
+spring.banner.image.height=50
+
+
+Note: In Spring Boot we have predefined class SpringApplication. In that class we have printBanner( ) mehtod which will take care of banner printing. This printBanner( ) method will be called as part of SpringApplication.run(..) method.
+
+
+
+Spring Vs SpringBoot
+Advantages Of SpringBoot
+Disadvantages of SpringBoot
+SpringBoot Features
+SpringBoot Parent Starter
+SpringBoot starter pom
+AutoConfiguration
+ComponentScanning
+IOC Container
+Dependency Injection ( SI vs CI vs FI)
+Autowiring
+StereoType annotations
+@Configuration & @Bean
+@SpringBootApplication annotation
+SpringApplication.run(..) method
+Creating SpringBoot Project using Intializer & Starter Wizard
+Standalone app (CSV Reader)
+Profiles in SpringBoot
+application.properties vs application.yml
+bootstrap.properties
+Runners in SpringBoot(ApplicationRunner & CmdlineRunner)
+@Order
+Banner in SpringBoot
+Maven Goals
+Running SpringBoot application using jar file
+
+
+
+
+
+
+
+
+
+
+
+
+
